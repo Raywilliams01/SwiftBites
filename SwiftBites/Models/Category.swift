@@ -10,13 +10,12 @@ import SwiftData
 
 @Model
 final class Category {
-    @Attribute(.unique)
     var id: UUID
     @Attribute(.unique)
     var name: String
 
     
-    @Relationship(deleteRule: .cascade)
+    @Relationship(deleteRule: .nullify)
     var recipes: [Recipe]
     
     

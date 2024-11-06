@@ -11,6 +11,7 @@ import SwiftData
 @Model
 final class Ingredient {
     var id: UUID
+    @Attribute(.unique)
     var name: String
     
     init(id: UUID = UUID(), name: String = "") {
