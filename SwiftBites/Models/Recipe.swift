@@ -11,8 +11,11 @@ import SwiftData
 @Model
 final class Recipe {
     var id: UUID
+    @Attribute(.unique)
     var name: String
     var summary: String
+    
+    @Relationship(deleteRule: .nullify)
     var category: Category?
     var serving: Int
     var time: Int

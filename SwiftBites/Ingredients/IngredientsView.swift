@@ -128,6 +128,5 @@ struct IngredientsView: View {
 
   private func delete(ingredient: Ingredient) {
       modelContext.delete(ingredient)
-//    deleteIngredient(id: ingredient.id)
   }
 }

@@ -86,8 +86,8 @@ struct CategoryForm: View {
           modelContext.insert(newCategory)
       case .edit(let category):
           categories.first(where: { $0.id == category.id })?.name = name
-          try modelContext.save()
       }
+      try modelContext.save()
       dismiss()
     } catch {
       self.error = error

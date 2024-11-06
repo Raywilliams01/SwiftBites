@@ -96,6 +96,8 @@ struct RecipeForm: View {
       IngredientsView(searchTerm: ingredientsQuery) { selectedIngredient in
       let recipeIngredient = RecipeIngredient(ingredient: selectedIngredient, quantity: "")
       ingredients.append(recipeIngredient)
+      modelContext.insert(recipeIngredient)
+      try! modelContext.save()
     }.searchable(text: $ingredientsQuery)
   }
 
@@ -266,6 +268,11 @@ struct RecipeForm: View {
     guard case .edit(let recipe) = mode else {
       fatalError("Delete unavailable in add mode")
     }
+   
+    if let category = recipe.category {
+        modelContext.delete(category)
+    }
+    
     modelContext.delete(recipe)
     dismiss()
   }
@@ -284,13 +291,21 @@ struct RecipeForm: View {
           let newRecipe = Recipe(
               name: name,
               summary: summary,
-              category: category,
+              category: nil,
               serving: serving,
               time: time,
-              ingredients: ingredients,
+              ingredients: [],
               instructions: instructions,
               imageData: imageData
             )
+          
+          if category != nil {
+              category?.recipes.append(newRecipe)
+              newRecipe.category = category
+          }
+          
+          newRecipe.ingredients = ingredients
+          
           modelContext.insert(newRecipe)
       case .edit(let recipe):
           recipe.name = name
@@ -302,7 +317,12 @@ struct RecipeForm: View {
           recipe.instructions = instructions
           recipe.imageData = imageData
           
+          if category?.name != nil {
+              category?.recipes.append(recipe)
+//              modelContext.insert(newCategory)
+          }
       }
+        
       dismiss()
     } catch {
       self.error = error

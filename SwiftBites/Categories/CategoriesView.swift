@@ -12,6 +12,7 @@ struct CategoriesView: View {
   
     // MARK: - INIT
    init(searchTerm: String) {
+       
        self.query = searchTerm
        _categories = Query(filter: #Predicate {
            if searchTerm.isEmpty  {
@@ -50,15 +51,7 @@ struct CategoriesView: View {
       if categories.isEmpty {
           empty
       } else {
-          list(for: categories
-//            .filter {
-//              if query.isEmpty {
-//                  return true
-//              } else {
-//                  return $0.name.localizedStandardContains(query)
-//              }
-//          }
-          )
+          list(for: categories)
       }
       
   }
@@ -96,4 +89,13 @@ struct CategoriesView: View {
       }
     }
   }
+}
+
+
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let schema = Schema([Recipe.self, Ingredient.self, RecipeIngredient.self, Category.self])
+    let container = try! ModelContainer(for: schema, configurations: config)
+
+    return CategoriesView(searchTerm: "").modelContainer(container)
 }

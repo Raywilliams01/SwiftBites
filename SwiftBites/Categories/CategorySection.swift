@@ -6,7 +6,7 @@ struct CategorySection: View {
   // MARK: - Body
 
   var body: some View {
-    Section(
+    return Section(
       content: {
         if category.recipes.isEmpty {
           empty
@@ -59,4 +59,9 @@ struct CategorySection: View {
       }
     )
   }
+}
+
+
+#Preview {
+    CategorySection(category: Category(name: "Pizza"))
 }
